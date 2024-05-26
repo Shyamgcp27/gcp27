@@ -1,0 +1,12 @@
+create database if not exists raw_db location 'gs://gcp27dataproc/raw.db';
+use raw_db;
+
+create or replace temporary view salesman_ny_v 
+using json 
+options (
+path='gs://gcp27dataproc/salesman_ny.json'
+);
+
+create table if not exists raw_db.salesman_ny 
+using parquet
+select * from salesman_ny_v;
